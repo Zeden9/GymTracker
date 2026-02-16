@@ -89,7 +89,7 @@ Atomic training data (one row = one set).
 - Fully normalized (3NF)
 - Atomic training data (1 set = 1 row)
 - Scalable to multiple users
-- Ready for analytics and LLM
+- Ready for analytics and ML
 - Backend/API friendly
 
 ---
