@@ -1,7 +1,11 @@
+import glob
 import re
 from datetime import datetime
 
 import pandas as pd
+from sqlalchemy import create_engine
+
+from config import DB_CONFIG
 
 DATE_PATTERN = re.compile(r"\d{2}\.\d{2}\.\d{4}")
 SET_PATTERN = re.compile(
@@ -51,5 +55,36 @@ def create_df(file: str) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-raw_df = create_df("data/raw/klata_plecy.txt")
-print(raw_df.head())
+def save_to_db(df: pd.DataFrame, db_url: str, table_name: str):
+    """
+    Saves the given DataFrame to a database table using SQLAlchemy.
+    Args:
+        df (pd.DataFrame): The DataFrame to be saved to the database.
+        db_url (str): The database connection URL (e.g., 'sqlite:///workout_data.db').
+        table_name (str): The name of the table where the data will be stored.
+    """
+    engine = create_engine(db_url)
+    df = df.rename(columns={"data": "note_text"})[["note_text"]]
+
+    df.to_sql(table_name, con=engine, if_exists="append", index=False)
+
+
+files = glob.glob("data/raw/*.txt")
+
+raw_dfs = [create_df(file) for file in files]
+
+# raw_df = create_df("data/raw/klata_plecy.txt")
+
+raw_df = pd.concat(raw_dfs, ignore_index=True)
+
+
+DATABASE_URL = (
+    f"postgresql+psycopg2://{DB_CONFIG['user']}:"
+    f"{DB_CONFIG['password']}@"
+    f"{DB_CONFIG['host']}:"
+    f"{DB_CONFIG['port']}/"
+    f"{DB_CONFIG['dbname']}"
+)
+save_to_db(raw_df, DATABASE_URL, "raw_notes")
+raw_df.to_csv("data/processed/raw_notes.csv", index=False)
+# print(raw_df.head())
