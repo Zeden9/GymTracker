@@ -9,3 +9,4 @@ data/raw/
 data/processed/
 docker-compose.yml
 gymtracker.egg-info/
+data_exploration.ipynb
