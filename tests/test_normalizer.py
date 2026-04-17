@@ -1,18 +1,18 @@
 from datetime import datetime
 
-from src.normalizer import normalize_entry
+from src.etl.normalizer import normalize_entry
 
-entry = {
+entry1 = {
     "date": datetime(2024, 5, 2),
-    "data": "ława 25x10 50kgx7,wyciąg pionowy 40kgx10 45x8",
+    "data": "ławka L 10x25 7kgx50,wyciąg pionowy 40kgx10 45x8",
 }
-print(normalize_entry(entry["date"], entry["data"]))
+print(normalize_entry(entry1["date"], entry1["data"]))
 
 
 def test_normalize_entry():
     entry = {
         "date": datetime(2024, 5, 2),
-        "data": "ława 25x10 50kgx7,wyciąg pionowy 40kgx10 45x8",
+        "data": "ława 10x25 7x50kg,wyciąg pionowy 40kgx10 45x8",
     }
     result = normalize_entry(entry["date"], entry["data"])
 

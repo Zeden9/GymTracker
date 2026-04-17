@@ -73,7 +73,7 @@ files = glob.glob("data/raw/*.txt")
 
 raw_dfs = [create_df(file) for file in files]
 
-# raw_df = create_df("data/raw/klata_plecy.txt")
+# raw_df = create_df("data/raw/lapy.txt")
 
 raw_df = pd.concat(raw_dfs, ignore_index=True)
 
@@ -88,13 +88,13 @@ raw_df = pd.concat(raw_dfs, ignore_index=True)
 # save_to_db(raw_df, DATABASE_URL, "raw_notes")
 raw_df.to_csv("data/processed/raw_notes.csv", index=False)
 
-text = """
-02.05.2024
-ława
-10x15 20kgx15 25kgx10
-Iso curl
-12x12 13x10 15kgx8"""
-result = parse_workout_text(text)
-print(result)
+# text = """
+# 02.05.2024
+# ława
+# 10x15 20kgx15 25kgx10
+# Iso curl
+# 12x12 13x10 15kgx8"""
+# result = parse_workout_text(text)
+# print(result)
 
 # print(raw_df.head())

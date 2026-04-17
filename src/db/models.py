@@ -1,50 +1,54 @@
-from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
-from sqlalchemy.orm import declarative_base, relationship
+from datetime import datetime
+from typing import List, Optional
 
-Base = declarative_base()
+from sqlalchemy import ForeignKey, func
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+
+
+class Base(DeclarativeBase):
+    pass
 
 
 class Workout(Base):
     __tablename__ = "workouts"
 
-    id = Column(Integer, primary_key=True)
-    workout_date = Column(DateTime)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    workout_date: Mapped[datetime] = mapped_column(default=func.now())
+    created_at: Mapped[datetime] = mapped_column(default=func.now())
 
-    exercises = relationship("WorkoutExercise", back_populates="workout")
+    exercises: Mapped[List["WorkoutExercise"]] = relationship(back_populates="workout")
 
 
 class Exercise(Base):
     __tablename__ = "exercises"
 
-    id = Column(Integer, primary_key=True)
-    name_normalized = Column(String, unique=True)
-    muscle_group = Column(String)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(unique=True)
+    description: Mapped[Optional[str]]
 
-    workouts = relationship("WorkoutExercise", back_populates="exercise")
+    workouts: Mapped[List["WorkoutExercise"]] = relationship(back_populates="exercise")
 
 
 class WorkoutExercise(Base):
     __tablename__ = "workout_exercises"
 
-    id = Column(Integer, primary_key=True)
-    workout_id = Column(Integer, ForeignKey("workouts.id"))
-    exercise_id = Column(Integer, ForeignKey("exercises.id"))
-    notes = Column(String)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    workout_id: Mapped[int] = mapped_column(ForeignKey("workouts.id"))
+    exercise_id: Mapped[int] = mapped_column(ForeignKey("exercises.id"))
+    notes: Mapped[Optional[str]]
 
-    workout = relationship("Workout", back_populates="exercises")
-    exercise = relationship("Exercise", back_populates="workouts")
-
-    sets = relationship("Set", back_populates="workout_exercise")
+    workout: Mapped["Workout"] = relationship(back_populates="exercises")
+    exercise: Mapped["Exercise"] = relationship(back_populates="workouts")
+    sets: Mapped[List["Set"]] = relationship(back_populates="workout_exercise")
 
 
 class Set(Base):
     __tablename__ = "sets"
 
-    id = Column(Integer, primary_key=True)
-    workout_exercise_id = Column(Integer, ForeignKey("workout_exercises.id"))
+    id: Mapped[int] = mapped_column(primary_key=True)
+    workout_exercise_id: Mapped[int] = mapped_column(ForeignKey("workout_exercises.id"))
+    set_number: Mapped[int]
+    reps: Mapped[int]
+    weight: Mapped[float]
 
-    set_number = Column(Integer)
-    reps = Column(Integer)
-    weight = Column(Float)
-
-    workout_exercise = relationship("WorkoutExercise", back_populates="sets")
+    workout_exercise: Mapped["WorkoutExercise"] = relationship(back_populates="sets")
