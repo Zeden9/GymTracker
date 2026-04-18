@@ -27,27 +27,6 @@ The system follows a normalized relational design to ensure scalability and anal
 
 ---
 
-## Project Structure
-
-GymTracker/
-├── src/
-│ ├── db/
-│ │ ├── models.py # SQLAlchemy ORM models
-│ ├── etl/
-│ │ ├── parser.py # Unstructured txt → Serialized CSV
-│ │ ├── normalizer.py # Serialized CSV → Normalized CSV
-│ │ └── seed.py # CSV import into database
-│ ├── gymtracker/
-│ │ ├── config.py
-│ │ └── main.py # FastAPI app
-├── frontend/ # React + Vite
-│ └── src/
-│ └── App.jsx
-├── docker-compose.yml
-└── README.md
-
----
-
 ## Database Schema
 
 ![Database Diagram](docs/db_diagram.png)
