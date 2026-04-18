@@ -72,10 +72,10 @@ The system follows a normalized relational design to ensure scalability and anal
 
 ## API Endpoints
 
-| Method | Endpoint                 | Opis                         |
-| ------ | ------------------------ | ---------------------------- |
-| GET    | `/exercises`             | Lista wszystkich ćwiczeń     |
-| GET    | `/exercises/{id}/volume` | Objętość treningowa w czasie |
+| Method | Endpoint                 | Opis            |
+| ------ | ------------------------ | --------------- |
+| GET    | `/exercises`             | Exercise list   |
+| GET    | `/exercises/{id}/volume` | Training volume |
 
 ---
 
@@ -113,13 +113,3 @@ npm run dev
 ```
 
 App available at: `http://localhost:5173`
-
----
-
-## Why This Design?
-
-- Fully normalized (3NF)
-- Atomic training data (1 set = 1 row)
-- Scalable to multiple users
-- Ready for analytics and ML
-- Backend/API friendly
